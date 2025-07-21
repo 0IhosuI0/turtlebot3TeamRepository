@@ -30,7 +30,7 @@ class QRCodeFollower(Node):
         self.robot_state = 'IDLE'  # IDLE, FOLLOWING, SEARCHING
         self.locked_target_id = None
         self.last_seen_box = None
-        
+
         # Obstacle Avoidance
         self.safety_distance = 0.45 # Increased from 0.35
         self.lidar_zones = {'front': float('inf'), 'left': float('inf'), 'right': float('inf')}
@@ -60,7 +60,7 @@ class QRCodeFollower(Node):
         frame_height, frame_width = frame.shape[:2]
         results = self.model(frame, verbose=False)[0]
         person_boxes = [list(map(int, box.xyxy[0])) for box in results.boxes if self.model.names[int(box.cls[0])] == 'person']
-        
+
         target_visible_this_frame = False
         current_target_box = None
 
