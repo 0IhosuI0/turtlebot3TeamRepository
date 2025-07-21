@@ -3,3 +3,6 @@
 .venv/
 .vscode/
 .log/
+install/
+build/
+log/
