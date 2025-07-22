@@ -32,7 +32,8 @@ class QRCodeFollower(Node):
         self.last_seen_box = None
 
         # Obstacle Avoidance
-        self.safety_distance = 0.5 # Increased from 0.45
+        self.safety_distance = 0.7 # Adjusted from 0.6
+        self.critical_safety_distance = 0.3 # New: For very close obstacles, move backward
         self.lidar_zones = {'front': float('inf'), 'left': float('inf'), 'right': float('inf')}
 
         # Searching State
@@ -132,16 +133,28 @@ class QRCodeFollower(Node):
         cv2.waitKey(1)
 
     def generate_motion_command(self, target_box, frame_width):
-        # 1. Obstacle Avoidance Layer
+        # 0. Critical Obstacle Avoidance (Highest Priority - Move Backward)
+        # If any zone is within critical safety distance, move backward
+        if (self.lidar_zones['front'] < self.critical_safety_distance or
+            self.lidar_zones['left'] < self.critical_safety_distance or
+            self.lidar_zones['right'] < self.critical_safety_distance):
+            self.get_logger().warn("CRITICAL OBSTACLE! Moving backward.")
+            twist_cmd = Twist()
+            twist_cmd.linear.x = -0.1 # Move backward
+            twist_cmd.angular.z = 0.0 # No rotation while backing up
+            return twist_cmd
+
+        # 1. Obstacle Avoidance Layer (High Priority - Front)
         if self.lidar_zones['front'] < self.safety_distance:
             self.get_logger().warn("Obstacle FRONT! Turning.")
             twist_cmd = Twist()
             twist_cmd.linear.x = 0.0
-            # Turn towards the more open side
-            twist_cmd.angular.z = -0.6 if self.lidar_zones['left'] < self.lidar_zones['right'] else 0.6 # Increased from 0.4
+            # Turn towards the more open side, more aggressively
+            twist_cmd.angular.z = -1.0 if self.lidar_zones['left'] < self.lidar_zones['right'] else 1.0
             return twist_cmd
 
         # 2. State-Based Action Layer
+        # Generate the base movement command based on robot state
         if self.robot_state == 'FOLLOWING':
             base_twist = self.get_following_twist(target_box, frame_width)
         elif self.robot_state == 'SEARCHING':
@@ -149,21 +162,28 @@ class QRCodeFollower(Node):
         else: # IDLE
             base_twist = Twist()
 
-        # 3. Reactive Nudging Layer for Side Obstacles
-        # If an obstacle is detected on the side, slow down and turn away.
+        # 3. Side Obstacle Avoidance Layer (Modifies base_twist)
+        # If a side obstacle is detected, adjust angular and linear velocity
         side_obstacle_detected = False
         if self.lidar_zones['left'] < self.safety_distance:
-            self.get_logger().warn("Obstacle LEFT! Slowing down and turning right.")
-            base_twist.angular.z -= 0.5 # Turn right
+            self.get_logger().warn("Obstacle LEFT! Adjusting motion to turn right.")
+            base_twist.angular.z -= 0.7 # Adjusted from 0.9
             side_obstacle_detected = True
         if self.lidar_zones['right'] < self.safety_distance:
-            self.get_logger().warn("Obstacle RIGHT! Slowing down and turning left.")
-            base_twist.angular.z += 0.5 # Turn left
+            self.get_logger().warn("Obstacle RIGHT! Adjusting motion to turn left.")
+            base_twist.angular.z += 0.7 # Adjusted from 0.9
             side_obstacle_detected = True
 
         if side_obstacle_detected:
-            # Reduce forward speed significantly when side obstacles are close
-            base_twist.linear.x *= 0.5
+            # If a side obstacle is detected, significantly reduce forward speed
+            # but allow a very small forward motion to keep maneuvering.
+            # Or, if already reversing, maintain that.
+            if base_twist.linear.x > 0: # If currently moving forward
+                base_twist.linear.x = min(base_twist.linear.x, 0.1) # Limit to a small positive speed (Increased from 0.05)
+            elif base_twist.linear.x < 0: # If currently reversing
+                # Keep reversing, but ensure it's not too fast
+                base_twist.linear.x = max(base_twist.linear.x, -0.1) # Limit to a small negative speed (Increased from -0.05)
+            # If linear.x is 0, keep it 0.
 
         return base_twist
 
@@ -173,7 +193,7 @@ class QRCodeFollower(Node):
         target_center_x = (x1 + x2) // 2
         target_area = (x2 - x1) * (y2 - y1)
         error_x = target_center_x - frame_width // 2
-        twist_msg.angular.z = -0.002 * error_x
+        twist_msg.angular.z = -0.003 * error_x # Increased from 0.002
         if target_area < 60000: twist_msg.linear.x = 0.15
         elif target_area > 120000: twist_msg.linear.x = -0.15
         else: twist_msg.linear.x = 0.0
@@ -198,7 +218,7 @@ class QRCodeFollower(Node):
             if current_time - self.search_state_start_time > 3.0:
                 self.sweep_direction *= -1
                 self.search_state_start_time = current_time
-            twist_msg.angular.z = 0.4 * self.sweep_direction
+            twist_msg.angular.z = 0.6 * self.sweep_direction # Increased from 0.4
         return twist_msg
 
     def save_user_profile(self, user_data):
