@@ -32,7 +32,7 @@ class QRCodeFollower(Node):
         self.last_seen_box = None
 
         # Obstacle Avoidance
-        self.safety_distance = 0.45 # Increased from 0.35
+        self.safety_distance = 0.5 # Increased from 0.45
         self.lidar_zones = {'front': float('inf'), 'left': float('inf'), 'right': float('inf')}
 
         # Searching State
@@ -44,10 +44,13 @@ class QRCodeFollower(Node):
         self.lost_timeout = 15.0
 
     def scan_callback(self, msg):
-        # Divide LiDAR into 3 zones
-        self.lidar_zones['right'] = min([r for r in msg.ranges[300:345] if r > 0.01] or [float('inf')])
-        self.lidar_zones['front'] = min([r for r in (msg.ranges[345:360] + msg.ranges[0:15]) if r > 0.01] or [float('inf')])
-        self.lidar_zones['left']  = min([r for r in msg.ranges[15:60] if r > 0.01] or [float('inf')])
+        # Wider LiDAR zones for better obstacle detection
+        # Right zone (270-330 degrees)
+        self.lidar_zones['right'] = min([r for r in msg.ranges[270:330] if r > 0.01] or [float('inf')])
+        # Front zone (330-360 and 0-30 degrees)
+        self.lidar_zones['front'] = min([r for r in (msg.ranges[330:360] + msg.ranges[0:30]) if r > 0.01] or [float('inf')])
+        # Left zone (30-90 degrees)
+        self.lidar_zones['left']  = min([r for r in msg.ranges[30:90] if r > 0.01] or [float('inf')])
 
     def image_callback(self, msg):
         try:
@@ -146,12 +149,22 @@ class QRCodeFollower(Node):
         else: # IDLE
             base_twist = Twist()
 
-        # 3. Reactive Nudging Layer
-        # Nudge more aggressively if close to side obstacles
-        if self.lidar_zones['left'] < self.safety_distance + 0.15:
-            base_twist.angular.z -= 0.4 # Increased from 0.3
-        if self.lidar_zones['right'] < self.safety_distance + 0.15:
-            base_twist.angular.z += 0.4 # Increased from 0.3
+        # 3. Reactive Nudging Layer for Side Obstacles
+        # If an obstacle is detected on the side, slow down and turn away.
+        side_obstacle_detected = False
+        if self.lidar_zones['left'] < self.safety_distance:
+            self.get_logger().warn("Obstacle LEFT! Slowing down and turning right.")
+            base_twist.angular.z -= 0.5 # Turn right
+            side_obstacle_detected = True
+        if self.lidar_zones['right'] < self.safety_distance:
+            self.get_logger().warn("Obstacle RIGHT! Slowing down and turning left.")
+            base_twist.angular.z += 0.5 # Turn left
+            side_obstacle_detected = True
+
+        if side_obstacle_detected:
+            # Reduce forward speed significantly when side obstacles are close
+            base_twist.linear.x *= 0.5
+
         return base_twist
 
     def get_following_twist(self, target_box, frame_width):
