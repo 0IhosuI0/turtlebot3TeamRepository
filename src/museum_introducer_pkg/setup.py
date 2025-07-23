@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'qr_code_follower = museum_introducer_pkg.qr_code_follower:main'
+            'qr_code_follower = museum_introducer_pkg.qr_code_follower:main',
+            'test_QR = museum_introducer_pkg.test1_qr_follower:main'
         ],
     },
 )

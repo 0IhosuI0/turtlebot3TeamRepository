@@ -186,7 +186,7 @@ class QRCodeFollower(Node):
 
         # 제한된 회전 각도
         if abs(error_x) < 50:  # 화면의 1/6을 넘지 않으면 회전하지 않음
-            twist_msg.angular.z = 0
+            twist_msg.angular.z = 0.0
 
         if target_area < 60000:
             twist_msg.linear.x = 0.15
