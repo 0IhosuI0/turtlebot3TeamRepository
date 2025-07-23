@@ -1,0 +1,28 @@
+{
+  "user_id": "profile_visitor_20250722_143514",
+  "name": "",
+  "nickname": "김은별",
+  "age_group": "청년",
+  "interest_field": "예술",
+  "interests": [
+    "art"
+  ],
+  "knowledge_level": "basic",
+  "available_time": 30,
+  "visited_exhibitions": [],
+  "visit_history": [],
+  "preferences": {
+    "language": "ko",
+    "voice_guide": true,
+    "walking_speed": "normal"
+  },
+  "start_time": "2025-07-22T15:41:07.206905",
+  "end_time": "2025-07-22T16:03:45.986915",
+  "profile_created": "2025-07-22T16:03:49.653814",
+  "last_visit": "2025-07-22T16:03:49.653828",
+  "system_info": {
+    "profile_type": "unified",
+    "created_by": "museum_guide_system",
+    "last_updated": "2025-07-22T16:03:49.653833"
+  }
+}

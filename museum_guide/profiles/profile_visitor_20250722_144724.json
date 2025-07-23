@@ -1,0 +1,34 @@
+{
+  "user_id": "profile_visitor_20250722_144724",
+  "name": "",
+  "nickname": "별",
+  "age_group": "청년",
+  "interest_field": "문화",
+  "interests": [
+    "culture"
+  ],
+  "knowledge_level": "basic",
+  "available_time": 30,
+  "visited_exhibitions": [
+    4,
+    7
+  ],
+  "visit_history": [
+    4,
+    7
+  ],
+  "preferences": {
+    "language": "ko",
+    "voice_guide": true,
+    "walking_speed": "normal"
+  },
+  "start_time": "2025-07-22T16:04:06.195487",
+  "end_time": "2025-07-22T16:04:33.532134",
+  "profile_created": "2025-07-22T16:04:35.345186",
+  "last_visit": "2025-07-22T16:04:35.345200",
+  "system_info": {
+    "profile_type": "unified",
+    "created_by": "museum_guide_system",
+    "last_updated": "2025-07-22T16:04:35.345205"
+  }
+}

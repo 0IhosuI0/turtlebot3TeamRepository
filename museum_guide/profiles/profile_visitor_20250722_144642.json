@@ -1,0 +1,34 @@
+{
+  "user_id": "profile_visitor_20250722_144642",
+  "name": "",
+  "nickname": "별",
+  "age_group": "청년",
+  "interest_field": "역사",
+  "interests": [
+    "history"
+  ],
+  "knowledge_level": "basic",
+  "available_time": 30,
+  "visited_exhibitions": [
+    1,
+    2
+  ],
+  "visit_history": [
+    1,
+    2
+  ],
+  "preferences": {
+    "language": "ko",
+    "voice_guide": true,
+    "walking_speed": "normal"
+  },
+  "start_time": "2025-07-22T16:54:33.482447",
+  "end_time": "2025-07-22T16:54:53.654879",
+  "profile_created": "2025-07-22T16:54:54.987926",
+  "last_visit": "2025-07-22T16:54:54.987934",
+  "system_info": {
+    "profile_type": "unified",
+    "created_by": "museum_guide_system",
+    "last_updated": "2025-07-22T16:54:54.987936"
+  }
+}

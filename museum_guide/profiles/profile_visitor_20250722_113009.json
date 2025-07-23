@@ -1,0 +1,21 @@
+{
+  "visitor_id": "visitor_20250722_113009",
+  "nickname": "김은별",
+  "age_group": "청년",
+  "interest_field": "전체",
+  "knowledge_level": "basic",
+  "available_time": 30,
+  "visited_exhibitions": [
+    1,
+    2
+  ],
+  "preferences": {
+    "language": "ko",
+    "voice_guide": true,
+    "walking_speed": "normal"
+  },
+  "start_time": "2025-07-22T11:30:09.432036",
+  "end_time": "2025-07-22T11:31:59.129326",
+  "saved_at": "2025-07-22T11:32:02.724503",
+  "save_location": "/home/kimeunbyeol/final_project_ws/museum_guide/profiles"
+}
