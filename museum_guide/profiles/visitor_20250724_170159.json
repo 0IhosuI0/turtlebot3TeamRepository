@@ -1,7 +1,7 @@
 {
-  "user_id": "profile_visitor_20250722_110840",
-  "name": "",
-  "nickname": "은별",
+  "user_id": "visitor_20250724_170159",
+  "name": "1",
+  "nickname": "1",
   "age_group": "청년",
   "interest_field": "전체",
   "interests": [
@@ -16,13 +16,13 @@
     "voice_guide": true,
     "walking_speed": "normal"
   },
-  "start_time": "2025-07-24T17:35:32.740526",
-  "end_time": "2025-07-24T17:35:41.826471",
-  "profile_created": "2025-07-24T17:35:43.798387",
-  "last_visit": "2025-07-24T17:37:32.025147",
+  "start_time": "2025-07-24T17:02:11.457519",
+  "end_time": "2025-07-24T17:02:57.868238",
+  "profile_created": "2025-07-24T17:03:02.250308",
+  "last_visit": "2025-07-24T17:03:02.250315",
   "system_info": {
     "profile_type": "unified",
     "created_by": "museum_guide_system",
-    "last_updated": "2025-07-24T17:35:43.798403"
+    "last_updated": "2025-07-24T17:03:02.250317"
   }
 }

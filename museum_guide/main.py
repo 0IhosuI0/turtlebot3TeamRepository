@@ -8,7 +8,7 @@
 
 from ui_manager import MuseumGuideUI
 from user_profile import UserProfile
-from turtlebot_control import TurtlebotController
+
 import sys
 import time
 import signal
@@ -69,7 +69,7 @@ class MuseumGuideSystem:
         """박물관 가이드 시스템 초기화"""
         self.ui = MuseumGuideUI()
         self.user_profile = UserProfile()
-        self.turtlebot = TurtlebotController()
+        
         self.running = True
        
         # 중복 프로필 정리 (최초 1회)
@@ -144,10 +144,7 @@ class MuseumGuideSystem:
             self.ros_manager.start_ros_spinning()
        
         # 터틀봇 연결 확인
-        if not self.turtlebot.connect():
-            self.ui.show_error("터틀봇 연결에 실패했습니다. 계속 진행하시겠습니까?")
-            if not self.ui.get_confirmation():
-                return False
+        
        
         return True
 
@@ -242,8 +239,12 @@ class MuseumGuideSystem:
                 self.ui.show_current_destination(exhibit)
                
                 # 터틀봇 이동
-                if not self.turtlebot.move_to_exhibition(exhibit_id):
-                    self.ui.show_error("터틀봇 이동에 실패했습니다.")
+                if self.ros_manager:
+                    target_position = exhibit.get("position", {"x": 0, "y": 0, "theta": 0})
+                    self.ros_manager.send_navigation_goal(target_position)
+                    # TODO: 네비게이션 완료 대기 로직 추가 필요
+                else:
+                    self.ui.show_error("ROS2 통합 모듈이 없어 터틀봇 이동을 할 수 없습니다.")
                     continue
                
                 # 전시품 설명
@@ -297,14 +298,7 @@ class MuseumGuideSystem:
                     # 전시품 정보를 ROS2로 전송
                     self.ros_manager.send_exhibition_info(exhibit_id, exhibit)
                    
-                    # 터틀봇 이동 목표 설정
-                    target_position = exhibit.get("position", {"x": 0, "y": 0, "theta": 0})
-                    self.ros_manager.send_navigation_goal(target_position)
-                   
-                    # 터틀봇 이동
-                    if not self.turtlebot.follow_user_to_exhibition(exhibit_id):
-                        self.ui.show_error("터틀봇 이동에 실패했습니다.")
-                        continue
+                    
                    
                     # 전시품 설명
                     self.show_exhibition_details(exhibit_id)
@@ -314,11 +308,17 @@ class MuseumGuideSystem:
                    
                     # 관람 계속할지 확인
                     if not self.ui.ask_continue_tracking():
+                        if self.ros_manager:
+                            self.ros_manager.send_robot_control_command("STOP")
                         break
             else:
                 # QR코드가 감지되지 않으면 잠시 대기
                 time.sleep(0.5)
        
+        # 트래킹 모드 종료 시 로봇에게 SEARCH 명령 전송 (사용자가 명시적으로 종료하지 않은 경우)
+        if self.ros_manager and self.running: # self.running이 True이면 사용자가 종료하지 않은 것
+            self.ros_manager.send_robot_control_command("SEARCH")
+
         # 관람 완료
         self.user_profile.visited_exhibitions = visited_exhibitions
         self.complete_tour()
@@ -341,10 +341,7 @@ class MuseumGuideSystem:
                    
                     self.ui.show_detected_exhibition(exhibit)
                    
-                    # 터틀봇 이동
-                    if not self.turtlebot.follow_user_to_exhibition(exhibit_id):
-                        self.ui.show_error("터틀봇 이동에 실패했습니다.")
-                        continue
+                    
                    
                     # 전시품 설명
                     self.show_exhibition_details(exhibit_id)
@@ -444,7 +441,7 @@ class MuseumGuideSystem:
 
     def show_system_status(self):
         """시스템 상태 표시"""
-        turtlebot_status = self.turtlebot.get_status()
+        turtlebot_status = "ROS2를 통해 터틀봇 상태 확인 필요"
         self.ui.show_system_status(turtlebot_status, self.user_profile)
 
     def show_settings(self):
@@ -653,8 +650,7 @@ class MuseumGuideSystem:
         if self.ros_manager:
             self.ros_manager.stop_ros()
        
-        # 터틀봇 안전 정지
-        self.turtlebot.stop_and_disconnect()
+        
        
         print("박물관 가이드 시스템이 종료되었습니다.")
 

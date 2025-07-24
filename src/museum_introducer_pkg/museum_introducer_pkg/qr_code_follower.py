@@ -19,7 +19,7 @@ class QRCodeFollower(Node):
         # ROS Communications
         self.bridge = CvBridge()
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.user_profile_pub = self.create_publisher(String, 'user_profile', 10)
+        self.qr_detection_pub = self.create_publisher(String, '/museum/qr_detected', 10)
         self.image_sub = self.create_subscription(
             CompressedImage,
             'camera/image_raw/compressed',
@@ -27,10 +27,12 @@ class QRCodeFollower(Node):
             QoSProfile(depth=10, reliability=QoSReliabilityPolicy.BEST_EFFORT)
         )
         self.scan_sub = self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
+        self.robot_control_sub = self.create_subscription(
+            String, '/museum/robot_control', self.robot_control_callback, 10)
 
         # YOLO Model
         self.model = YOLO('yolov8n.pt')
-        os.makedirs("users", exist_ok=True)
+        
 
         # --- State Management ---
         self.robot_state = 'IDLE'  # IDLE, FOLLOWING, SEARCHING
@@ -49,6 +51,26 @@ class QRCodeFollower(Node):
         self.last_seen_side = 'CENTER'
         self.sweep_direction = 1
         self.lost_timeout = 15.0
+
+    def robot_control_callback(self, msg):
+        """로봇 제어 명령 콜백"""
+        try:
+            control_data = json.loads(msg.data)
+            command = control_data.get('command')
+            if command == 'SEARCH':
+                self.get_logger().info("Received SEARCH command. Transitioning to SEARCHING state.")
+                self.robot_state = 'SEARCHING'
+                self.search_state = 'PEEK'
+                self.search_start_time = time.time()
+                self.search_state_start_time = time.time()
+                self.locked_target_id = None # 검색 시작 시 타겟 해제
+            elif command == 'STOP':
+                self.get_logger().info("Received STOP command. Transitioning to IDLE state.")
+                self.robot_state = 'IDLE'
+                self.locked_target_id = None
+                self.cmd_vel_pub.publish(Twist()) # 로봇 정지
+        except Exception as e:
+            self.get_logger().error(f'Robot control data parsing error: {e}')
 
     def scan_callback(self, msg):
         # Wider LiDAR zones for better obstacle detection
@@ -102,8 +124,9 @@ class QRCodeFollower(Node):
                             self.locked_target_id = user_id
                             current_target_box = p_box
                             target_visible_this_frame = True
-                            self.save_user_profile(user_info)
-                            self.user_profile_pub.publish(String(data=json.dumps(user_info)))
+                            # Publish QR detection data
+                            qr_data_to_publish = {"exhibition_id": user_info.get('exhibition_id'), "user_id": user_info.get('user_id')}
+                            self.qr_detection_pub.publish(String(data=json.dumps(qr_data_to_publish)))
                             break
                 except Exception as e:
                     self.get_logger().error(f'QR parsing failed: {e}')
@@ -227,11 +250,7 @@ class QRCodeFollower(Node):
             twist_msg.angular.z = 0.6 * self.sweep_direction # Increased from 0.4
         return twist_msg
 
-    def save_user_profile(self, user_data):
-        user_id = user_data.get("user_id", "unknown")
-        with open(f"users/{user_id}.json", "w") as f:
-            json.dump(user_data, f, indent=4)
-        self.get_logger().info(f'User profile saved: users/{user_id}.json')
+    
 
 def main(args=None):
     rclpy.init(args=args)

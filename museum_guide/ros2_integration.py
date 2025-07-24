@@ -31,6 +31,7 @@ class MuseumROS2Bridge(Node):
         self.user_profile_pub = self.create_publisher(String, '/museum/user_profile', 10)
         self.exhibition_info_pub = self.create_publisher(String, '/museum/exhibition_info', 10)
         self.navigation_cmd_pub = self.create_publisher(PoseStamped, '/museum/navigation_goal', 10)
+        self.robot_control_pub = self.create_publisher(String, '/museum/robot_control', 10)
        
         # Subscribers - 팀원들 노드에서 데이터 수신
         self.qr_detection_sub = self.create_subscription(
@@ -154,6 +155,16 @@ class MuseumROS2Bridge(Node):
         except Exception as e:
             print(f"❌ 네비게이션 목표 발행 오류: {e}")
 
+    def publish_robot_control_command(self, command):
+        """로봇 제어 명령을 ROS2로 발행"""
+        try:
+            msg = String()
+            msg.data = json.dumps({"command": command}, ensure_ascii=False)
+            self.robot_control_pub.publish(msg)
+            print(f"📤 로봇 제어 명령 발행: {command}")
+        except Exception as e:
+            print(f"❌ 로봇 제어 명령 발행 오류: {e}")
+
     def get_detected_qr(self):
         """감지된 QR코드 정보 반환"""
         detected = self.detected_qr
@@ -221,6 +232,16 @@ class ROS2IntegrationManager:
         """네비게이션 목표 전송"""
         if self.bridge:
             self.bridge.publish_navigation_goal(target_position)
+
+    def send_navigation_goal(self, target_position):
+        """네비게이션 목표 전송"""
+        if self.bridge:
+            self.bridge.publish_navigation_goal(target_position)
+
+    def send_robot_control_command(self, command):
+        """로봇 제어 명령 전송"""
+        if self.bridge:
+            self.bridge.publish_robot_control_command(command)
 
     def get_qr_detection(self):
         """QR코드 감지 결과 수신"""

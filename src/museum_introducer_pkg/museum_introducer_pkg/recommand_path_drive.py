@@ -10,38 +10,33 @@ class PathFollower(Node):
         super().__init__('recommand_path_drive')
 
         self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+        self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+        self.goal_sub = self.create_subscription(PoseStamped, '/museum/navigation_goal', self.goal_callback, 10)
 
-        # 좌표 리스트 (사진 기준)
-        self.path = [
-            (-7.95, 6.09),
-            (7.17, 6.09),
-            (7.17, -1.78),
-            (7.17, -5.56),
-            (7.17, 6.09),
-            (-7.95, 6.09)
-        ]
-
-        self.index = 0
-        self.pose = None
-        self.timer = self.create_timer(0.1, self.follow_path)
+        self.target_pose = None
+        self.current_pose = None
+        self.timer = self.create_timer(0.1, self.follow_goal)
 
     def odom_callback(self, msg):
-        self.pose = msg.pose.pose
+        self.current_pose = msg.pose.pose
 
-    def follow_path(self):
-        if self.pose is None or self.index >= len(self.path):
+    def goal_callback(self, msg):
+        self.target_pose = msg.pose
+
+    def follow_goal(self):
+        if self.current_pose is None or self.target_pose is None:
             return
 
-        target_x, target_y = self.path[self.index]
-        current_x = self.pose.position.x
-        current_y = self.pose.position.y
+        target_x = self.target_pose.position.x
+        target_y = self.target_pose.position.y
+        current_x = self.current_pose.position.x
+        current_y = self.current_pose.position.y
 
         dx = target_x - current_x
         dy = target_y - current_y
         distance = math.hypot(dx, dy)
 
-        yaw = self.get_yaw_from_quaternion(self.pose.orientation)
+        yaw = self.get_yaw_from_quaternion(self.current_pose.orientation)
         target_angle = math.atan2(dy, dx)
         angle_diff = self.normalize_angle(target_angle - yaw)
 
@@ -53,8 +48,8 @@ class PathFollower(Node):
         elif distance > 0.2:
             twist.linear.x = 0.3
         else:
-            self.get_logger().info(f"도착: {self.index+1}/{len(self.path)} → ({target_x:.2f}, {target_y:.2f})")
-            self.index += 1
+            self.get_logger().info(f"목표 도착: ({target_x:.2f}, {target_y:.2f})")
+            self.target_pose = None # 목표 도착 시 초기화
 
         self.cmd_pub.publish(twist)
 

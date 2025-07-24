@@ -20,5 +20,6 @@
 
   <export>
     <build_type>ament_python</build_type>
+    <launch_file>launch/museum_guide_launch.py</launch_file>
   </export>
 </package>
