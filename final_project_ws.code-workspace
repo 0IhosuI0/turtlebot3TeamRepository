@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "final_project_ws",
+			"path": ".."
+		},
+		{
+			"name": "src",
+			"path": "../../Downloads/turtlebot3TeamRepository-main/src"
+		}
+	],
+	"settings": {}
+}
