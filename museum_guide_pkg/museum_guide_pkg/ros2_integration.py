@@ -13,25 +13,30 @@ from datetime import datetime
 try:
     import rclpy
     from rclpy.node import Node
+    from rclpy.action import ActionClient
     from std_msgs.msg import String
     from sensor_msgs.msg import Image
     from geometry_msgs.msg import Twist, PoseStamped
+    from museum_robot_msgs.action import FollowUser
     ROS_AVAILABLE = True
 except ImportError:
     ROS_AVAILABLE = False
-    print("⚠️ ROS2 미설치 - 시뮬레이션 모드로 동작")
+    # print("⚠️ ROS2 미설치 - 시뮬레이션 모드로 동작") # Suppress this print
 
 class MuseumROS2Bridge(Node):
     """팀원들의 ROS2 패키지와 우리 시스템을 연결하는 브리지"""
    
     def __init__(self):
         super().__init__('museum_guide_bridge')
+        self.get_logger().info("MuseumROS2Bridge node initializing...")
        
         # Publishers - 팀원들 노드로 데이터 전송
         self.user_profile_pub = self.create_publisher(String, '/museum/user_profile', 10)
         self.exhibition_info_pub = self.create_publisher(String, '/museum/exhibition_info', 10)
         self.navigation_cmd_pub = self.create_publisher(PoseStamped, '/museum/navigation_goal', 10)
-        self.robot_control_pub = self.create_publisher(String, '/museum/robot_control', 10)
+
+        # Action Client
+        self._action_client = ActionClient(self, FollowUser, 'follow_user')
        
         # Subscribers - 팀원들 노드에서 데이터 수신
         self.qr_detection_sub = self.create_subscription(
@@ -45,52 +50,48 @@ class MuseumROS2Bridge(Node):
         self.detected_qr = None
         self.human_detected = False
         self.navigation_active = False
+        self.robot_state = "IDLE"
        
-        print("🔗 ROS2 브리지 노드 초기화 완료")
+        self.get_logger().info("ROS2 브리지 노드 초기화 완료")
 
     def qr_detection_callback(self, msg):
-        """QR코드 감지 콜백 (팀원의 qr_code_follower.py에서 받음)"""
         try:
             qr_data = json.loads(msg.data)
             self.detected_qr = qr_data
-            print(f"🔍 QR코드 감지: {qr_data}")
+            self.get_logger().debug(f"QR코드 감지: {qr_data}") # Changed to debug
            
-            # 전시품 ID 추출
             if 'exhibition_id' in qr_data:
                 exhibition_id = qr_data['exhibition_id']
-                print(f"📍 전시품 {exhibition_id}번 인식됨")
+                self.get_logger().debug(f"전시품 {exhibition_id}번 인식됨") # Changed to debug
                
         except Exception as e:
-            print(f"❌ QR코드 데이터 파싱 오류: {e}")
+            self.get_logger().error(f"QR코드 데이터 파싱 오류: {e}")
 
     def human_detection_callback(self, msg):
-        """사람 감지 콜백 (팀원의 Human_QR_detector.py에서 받음)"""
         try:
             human_data = json.loads(msg.data)
             self.human_detected = human_data.get('detected', False)
            
             if self.human_detected:
-                print("👤 사용자 감지됨")
+                self.get_logger().debug("사용자 감지됨") # Changed to debug
             else:
-                print("🚫 사용자 감지 안됨")
+                self.get_logger().debug("사용자 감지 안됨") # Changed to debug
                
         except Exception as e:
-            print(f"❌ 사람 감지 데이터 파싱 오류: {e}")
+            self.get_logger().error(f"사람 감지 데이터 파싱 오류: {e}")
 
     def navigation_status_callback(self, msg):
-        """네비게이션 상태 콜백"""
         try:
             nav_data = json.loads(msg.data)
             self.navigation_active = nav_data.get('active', False)
             status = nav_data.get('status', 'unknown')
            
-            print(f"🗺️ 네비게이션 상태: {status}")
+            self.get_logger().debug(f"네비게이션 상태: {status}") # Changed to debug
            
         except Exception as e:
-            print(f"❌ 네비게이션 상태 파싱 오류: {e}")
+            self.get_logger().error(f"네비게이션 상태 파싱 오류: {e}")
 
     def publish_user_profile(self, user_profile):
-        """사용자 프로필을 ROS2로 발행"""
         try:
             profile_data = {
                 "user_id": user_profile.visitor_id,
@@ -106,13 +107,12 @@ class MuseumROS2Bridge(Node):
             msg.data = json.dumps(profile_data, ensure_ascii=False)
             self.user_profile_pub.publish(msg)
            
-            print(f"📤 사용자 프로필 발행: {user_profile.nickname}")
+            self.get_logger().debug(f"사용자 프로필 발행: {user_profile.nickname}") # Changed to debug
            
         except Exception as e:
-            print(f"❌ 사용자 프로필 발행 오류: {e}")
+            self.get_logger().error(f"사용자 프로필 발행 오류: {e}")
 
     def publish_exhibition_info(self, exhibition_id, exhibition_data):
-        """전시품 정보를 ROS2로 발행"""
         try:
             exhibition_info = {
                 "exhibition_id": exhibition_id,
@@ -128,13 +128,12 @@ class MuseumROS2Bridge(Node):
             msg.data = json.dumps(exhibition_info, ensure_ascii=False)
             self.exhibition_info_pub.publish(msg)
            
-            print(f"📤 전시품 정보 발행: {exhibition_data['name']}")
+            self.get_logger().debug(f"전시품 정보 발행: {exhibition_data['name']}") # Changed to debug
            
         except Exception as e:
-            print(f"❌ 전시품 정보 발행 오류: {e}")
+            self.get_logger().error(f"전시품 정보 발행 오류: {e}")
 
     def publish_navigation_goal(self, target_position):
-        """네비게이션 목표를 ROS2로 발행"""
         try:
             goal_msg = PoseStamped()
             goal_msg.header.frame_id = 'map'
@@ -144,60 +143,76 @@ class MuseumROS2Bridge(Node):
             goal_msg.pose.position.y = target_position['y']
             goal_msg.pose.position.z = 0.0
            
-            # theta를 quaternion으로 변환 (간단화)
             goal_msg.pose.orientation.z = target_position.get('theta', 0.0)
             goal_msg.pose.orientation.w = 1.0
            
             self.navigation_cmd_pub.publish(goal_msg)
            
-            print(f"📤 네비게이션 목표 발행: ({target_position['x']}, {target_position['y']})")
+            self.get_logger().debug(f"네비게이션 목표 발행: ({target_position['x']}, {target_position['y']})") # Changed to debug
            
         except Exception as e:
-            print(f"❌ 네비게이션 목표 발행 오류: {e}")
+            self.get_logger().error(f"네비게이션 목표 발행 오류: {e}")
 
-    def publish_robot_control_command(self, command):
-        """로봇 제어 명령을 ROS2로 발행"""
-        try:
-            msg = String()
-            msg.data = json.dumps({"command": command}, ensure_ascii=False)
-            self.robot_control_pub.publish(msg)
-            print(f"📤 로봇 제어 명령 발행: {command}")
-        except Exception as e:
-            print(f"❌ 로봇 제어 명령 발행 오류: {e}")
+    def send_follow_user_goal(self, user_id, command):
+        goal_msg = FollowUser.Goal()
+        goal_msg.user_id = user_id
+        goal_msg.command = command
+
+        self._action_client.wait_for_server()
+
+        self._send_goal_future = self._action_client.send_goal_async(
+            goal_msg, 
+            feedback_callback=self.feedback_callback
+        )
+
+        self._send_goal_future.add_done_callback(self.goal_response_callback)
+
+    def goal_response_callback(self, future):
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().info('Goal rejected :(')
+            return
+
+        self.get_logger().info('Goal accepted :)')
+
+        self._get_result_future = goal_handle.get_result_async()
+        self._get_result_future.add_done_callback(self.get_result_callback)
+
+    def get_result_callback(self, future):
+        result = future.result().result
+        self.get_logger().info(f'Result: {result.status}')
+        self.robot_state = "IDLE"
+
+    def feedback_callback(self, feedback_msg):
+        self.robot_state = feedback_msg.feedback.current_state
+        self.get_logger().debug(f'Received feedback: {self.robot_state}') # Changed to debug
 
     def get_detected_qr(self):
-        """감지된 QR코드 정보 반환"""
         detected = self.detected_qr
-        self.detected_qr = None  # 한 번 읽으면 초기화
+        self.detected_qr = None
         return detected
 
     def is_human_detected(self):
-        """사람 감지 여부 반환"""
         return self.human_detected
 
     def is_navigation_active(self):
-        """네비게이션 활성 상태 반환"""
         return self.navigation_active
 
-
 class ROS2IntegrationManager:
-    """ROS2 통합 매니저 (우리 시스템에서 사용)"""
-   
     def __init__(self):
         self.bridge = None
         self.ros_thread = None
        
         if ROS_AVAILABLE:
             try:
-                rclpy.init()
+                # rclpy.init() # Moved to main.py
                 self.bridge = MuseumROS2Bridge()
-                print("✅ ROS2 브리지 초기화 성공")
+                self.get_logger().info("ROS2 브리지 초기화 성공")
             except Exception as e:
-                print(f"❌ ROS2 브리지 초기화 실패: {e}")
+                self.get_logger().error(f"ROS2 브리지 초기화 실패: {e}")
                 self.bridge = None
 
     def start_ros_spinning(self):
-        """ROS2 스피닝 시작 (별도 스레드에서)"""
         if self.bridge:
             import threading
            
@@ -205,58 +220,54 @@ class ROS2IntegrationManager:
                 try:
                     rclpy.spin(self.bridge)
                 except Exception as e:
-                    print(f"❌ ROS2 스피닝 오류: {e}")
+                    self.get_logger().error(f"ROS2 스피닝 오류: {e}")
            
             self.ros_thread = threading.Thread(target=spin_ros, daemon=True)
             self.ros_thread.start()
-            print("🔄 ROS2 스피닝 시작")
+            self.get_logger().info("ROS2 스피닝 시작")
 
     def stop_ros(self):
-        """ROS2 정리"""
         if self.bridge:
             self.bridge.destroy_node()
             rclpy.shutdown()
-            print("🛑 ROS2 브리지 종료")
+            self.get_logger().info("ROS2 브리지 종료")
 
     def send_user_profile(self, user_profile):
-        """사용자 프로필 전송"""
         if self.bridge:
             self.bridge.publish_user_profile(user_profile)
 
     def send_exhibition_info(self, exhibition_id, exhibition_data):
-        """전시품 정보 전송"""
         if self.bridge:
             self.bridge.publish_exhibition_info(exhibition_id, exhibition_data)
 
     def send_navigation_goal(self, target_position):
-        """네비게이션 목표 전송"""
         if self.bridge:
             self.bridge.publish_navigation_goal(target_position)
 
-    def send_navigation_goal(self, target_position):
-        """네비게이션 목표 전송"""
+    def start_following(self, user_id):
         if self.bridge:
-            self.bridge.publish_navigation_goal(target_position)
+            self.bridge.send_follow_user_goal(user_id, "START")
 
-    def send_robot_control_command(self, command):
-        """로봇 제어 명령 전송"""
+    def stop_following(self):
         if self.bridge:
-            self.bridge.publish_robot_control_command(command)
+            self.bridge.send_follow_user_goal("", "STOP")
+
+    def get_robot_state(self):
+        if self.bridge:
+            return self.bridge.robot_state
+        return "IDLE"
 
     def get_qr_detection(self):
-        """QR코드 감지 결과 수신"""
         if self.bridge:
             return self.bridge.get_detected_qr()
         return None
 
     def check_human_detection(self):
-        """사람 감지 확인"""
         if self.bridge:
             return self.bridge.is_human_detected()
         return False
 
     def check_navigation_status(self):
-        """네비게이션 상태 확인"""
         if self.bridge:
             return self.bridge.is_navigation_active()
         return False
@@ -266,14 +277,18 @@ class ROS2IntegrationManager:
 def load_user_data_from_json(user_id="U128"):
     """팀원들이 만든 사용자 JSON 데이터 로드"""
     try:
-        with open(f"users/{user_id}.json", 'r', encoding='utf-8') as f:
+        # Adjust path to be relative to the package's data directory
+        script_dir = os.path.dirname(__file__)
+        file_path = os.path.join(script_dir, '..', 'profiles', f'{user_id}.json')
+        
+        with open(file_path, 'r', encoding='utf-8') as f:
             user_data = json.load(f)
        
         print(f"✅ 사용자 데이터 로드: {user_data['name']}")
         return user_data
        
     except FileNotFoundError:
-        print(f"❌ 사용자 파일 없음: users/{user_id}.json")
+        print(f"❌ 사용자 파일 없음: {file_path}")
         return None
     except Exception as e:
         print(f"❌ 사용자 데이터 로드 오류: {e}")
@@ -304,6 +319,7 @@ def test_integration():
     print("🧪 ROS2 통합 테스트 시작")
    
     # ROS2 매니저 초기화
+    rclpy.init()
     ros_manager = ROS2IntegrationManager()
     ros_manager.start_ros_spinning()
    

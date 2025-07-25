@@ -27,7 +27,9 @@ class UserProfile:
             "voice_guide": True,
             "walking_speed": "normal"
         }
-        self.profiles_dir = "profiles"
+        # Adjust path to be relative to the package's profiles directory
+        script_dir = os.path.dirname(__file__)
+        self.profiles_dir = os.path.join(script_dir, '..', 'profiles')
         self._ensure_directory()
 
     def _ensure_directory(self):
@@ -39,13 +41,13 @@ class UserProfile:
         if existing_profiles:
             ui.clear_screen()
             ui.display_header("👤 사용자 선택")
-            print("\n📋 기존 사용자:")
+            self.node_logger.info("\n📋 기존 사용자:") # Changed to logger
             for i, profile_info in enumerate(existing_profiles, 1):
                 name = profile_info.get('name', profile_info.get('nickname', 'Unknown'))
                 user_id = profile_info['user_id']
                 last_visit = profile_info.get('last_visit', '첫 방문')
-                print(f"{i}. {name} ({user_id}) - 마지막 방문: {last_visit}")
-            print(f"{len(existing_profiles) + 1}. 새 사용자 등록")
+                self.node_logger.info(f"{i}. {name} ({user_id}) - 마지막 방문: {last_visit}") # Changed to logger
+            self.node_logger.info(f"{len(existing_profiles) + 1}. 새 사용자 등록") # Changed to logger
             while True:
                 choice = ui.get_input(f"\n선택하세요 (1-{len(existing_profiles) + 1}): ")
                 try:
@@ -87,7 +89,7 @@ class UserProfile:
                         'filename': filename
                     })
                 except Exception as e:
-                    print(f"⚠️ 프로필 읽기 오류 {filename}: {e}")
+                    self.node_logger.warn(f"⚠️ 프로필 읽기 오류 {filename}: {e}") # Changed to logger
                     continue
         return profiles
 
@@ -115,12 +117,12 @@ class UserProfile:
                     data['last_visit'] = datetime.now().isoformat()
                     with open(filepath, 'w', encoding='utf-8') as f:
                         json.dump(data, f, ensure_ascii=False, indent=2)
-                    print(f"✅ 기존 프로필 로드: {self.nickname}")
+                    self.node_logger.info(f"✅ 기존 프로필 로드: {self.nickname}") # Changed to logger
                     return True
                 except Exception as e:
-                    print(f"❌ 프로필 로드 오류: {e}")
+                    self.node_logger.error(f"❌ 프로필 로드 오류: {e}") # Changed to logger
                     continue
-        print(f"❌ 프로필을 찾을 수 없습니다: {user_id}")
+        self.node_logger.error(f"❌ 프로필을 찾을 수 없습니다: {user_id}") # Changed to logger
         return False
 
     def _normalize_interest(self, interest_data):
@@ -215,10 +217,10 @@ class UserProfile:
         try:
             with open(filepath, 'w', encoding='utf-8') as f:
                 json.dump(profile_data, f, ensure_ascii=False, indent=2)
-            print(f"✅ 프로필 저장 완료: {filepath}")
+            self.node_logger.info(f"✅ 프로필 저장 완료: {filepath}") # Changed to logger
             return True
         except Exception as e:
-            print(f"❌ 프로필 저장 실패: {e}")
+            self.node_logger.error(f"❌ 프로필 저장 실패: {e}") # Changed to logger
             return False
 
     def _interest_to_english(self, korean_interest):
@@ -226,13 +228,19 @@ class UserProfile:
             "공예": "craft",
             "도자": "ceramics",
             "금속/종교": "metal",
-            "전체": "general"
+            "history": "공예",
+            "art": "도자",
+            "religion": "금속/종교"
         }
         return mapping.get(korean_interest, "general")
 
-    def migrate_duplicate_profiles(self):
-        print("🔄 중복 프로필 정리 시작...")
-        users_dir = "users"
+    def migrate_duplicate_profiles(self, node_logger):
+        self.node_logger = node_logger # Store logger
+        self.node_logger.info("🔄 중복 프로필 정리 시작...") # Changed to logger
+        # Adjust path to be relative to the package's profiles directory
+        script_dir = os.path.dirname(__file__)
+        users_dir = os.path.join(script_dir, '..', 'users')
+        
         if os.path.exists(users_dir):
             for filename in os.listdir(users_dir):
                 if filename.endswith('.json'):
@@ -240,14 +248,14 @@ class UserProfile:
                     new_path = os.path.join(self.profiles_dir, filename)
                     if not os.path.exists(new_path):
                         shutil.move(old_path, new_path)
-                        print(f"📁 이동: {filename}")
+                        self.node_logger.info(f"📁 이동: {filename}") # Changed to logger
             try:
                 if not os.listdir(users_dir):
                     os.rmdir(users_dir)
-                    print("🗑️ 빈 users/ 디렉토리 제거")
-            except:
-                pass
-        print("✅ 중복 프로필 정리 완료")
+                    self.node_logger.info("🗑️ 빈 users/ 디렉토리 제거") # Changed to logger
+            except Exception as e:
+                self.node_logger.error(f"빈 users/ 디렉토리 제거 실패: {e}") # Changed to logger
+        self.node_logger.info("✅ 중복 프로필 정리 완료") # Changed to logger
 
     def _select_age_group(self, ui):
         ui.clear_screen()
@@ -259,10 +267,10 @@ class UserProfile:
             "4": "중년 (40-59세)",
             "5": "시니어 (60세 이상)"
         }
-        print("\n연령대를 선택해주세요:")
+        self.node_logger.info("\n연령대를 선택해주세요:") # Changed to logger
         for key, value in age_groups.items():
-            print(f"{key}. {value}")
-        print("0. 이전으로")
+            self.node_logger.info(f"{key}. {value}") # Changed to logger
+        self.node_logger.info("0. 이전으로") # Changed to logger
         while True:
             choice = ui.get_input("\n선택: ")
             if choice == "0":
@@ -284,10 +292,10 @@ class UserProfile:
             "3": "금속/종교 (향로, 동종, 청동주전자)",
             "4": "전체 (모든 분야에 관심)"
         }
-        print("\n관심 있는 분야를 선택해주세요:")
+        self.node_logger.info("\n관심 있는 분야를 선택해주세요:") # Changed to logger
         for key, value in interests.items():
-            print(f"{key}. {value}")
-        print("0. 이전으로")
+            self.node_logger.info(f"{key}. {value}") # Changed to logger
+        self.node_logger.info("0. 이전으로") # Changed to logger
         while True:
             choice = ui.get_input("\n선택: ")
             if choice == "0":
@@ -308,10 +316,10 @@ class UserProfile:
             "2": "중급 - 적당한 수준의 전문 지식 원함",
             "3": "고급 - 상세하고 전문적인 설명 원함"
         }
-        print("\n박물관/문화재에 대한 지식 수준을 선택해주세요:")
+        self.node_logger.info("\n박물관/문화재에 대한 지식 수준을 선택해주세요:") # Changed to logger
         for key, value in levels.items():
-            print(f"{key}. {value}")
-        print("0. 이전으로")
+            self.node_logger.info(f"{key}. {value}") # Changed to logger
+        self.node_logger.info("0. 이전으로") # Changed to logger
         while True:
             choice = ui.get_input("\n선택: ")
             if choice == "0":
@@ -334,10 +342,10 @@ class UserProfile:
             "3": "90분 - 여유 관람 (6-7개 전시품)",
             "4": "직접 입력"
         }
-        print("\n관람 가능한 시간을 선택해주세요:")
+        self.node_logger.info("\n관람 가능한 시간을 선택해주세요:") # Changed to logger
         for key, value in time_options.items():
-            print(f"{key}. {value}")
-        print("0. 이전으로")
+            self.node_logger.info(f"{key}. {value}") # Changed to logger
+        self.node_logger.info("0. 이전으로") # Changed to logger
         while True:
             choice = ui.get_input("\n선택: ")
             if choice == "0":
@@ -368,11 +376,11 @@ class UserProfile:
     def _confirm_profile(self, ui):
         ui.clear_screen()
         ui.display_header("✅ 설정 확인")
-        print(f"\n👤 닉네임: {self.nickname}")
-        print(f"👥 연령대: {self.age_group}")
-        print(f"🎨 관심 분야: {self.interest_field}")
-        print(f"📚 지식 수준: {self.knowledge_level}")
-        print(f"⏰ 관람 시간: {self.available_time}분")
+        self.node_logger.info(f"\n👤 닉네임: {self.nickname}") # Changed to logger
+        self.node_logger.info(f"👥 연령대: {self.age_group}") # Changed to logger
+        self.node_logger.info(f"🎨 관심 분야: {self.interest_field}") # Changed to logger
+        self.node_logger.info(f"📚 지식 수준: {self.knowledge_level}") # Changed to logger
+        self.node_logger.info(f"⏰ 관람 시간: {self.available_time}분") # Changed to logger
         return ui.get_confirmation("\n이 설정으로 관람을 시작하시겠습니까?")
 
     def add_visited_exhibition(self, exhibit_id):

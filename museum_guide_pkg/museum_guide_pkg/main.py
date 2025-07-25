@@ -3,11 +3,10 @@
 """
 스마트 전시 가이드 로봇 - 메인 실행 파일
 팀 A: UI 및 시스템 통합 담당
-단일 프로필 시스템 적용
 """
 
-from ui_manager import MuseumGuideUI
-from user_profile import UserProfile
+from museum_guide_pkg.ui_manager import MuseumGuideUI
+from museum_guide_pkg.user_profile import UserProfile
 
 import sys
 import time
@@ -16,19 +15,23 @@ import os
 import json
 import shutil
 from datetime import datetime
+import subprocess
 
 # ROS2 통합은 선택적으로 import
 try:
-    from ros2_integration import ROS2IntegrationManager, load_user_data_from_json, convert_user_interests_to_our_system
+    import rclpy
+    from rclpy.node import Node
+    from museum_guide_pkg.ros2_integration import ROS2IntegrationManager, load_user_data_from_json, convert_user_interests_to_our_system
     ROS2_AVAILABLE = True
 except ImportError:
-    print("⚠️ ROS2 통합 모듈 없음 - 기본 모드로 실행")
     ROS2_AVAILABLE = False
+    # self.get_logger().warn("ROS2 통합 모듈 없음 - 기본 모드로 실행") # Suppress this print
 
-def migrate_old_structure():
+def migrate_old_structure(node_logger):
     """기존 users/ 디렉토리를 profiles/로 통합"""
-    users_dir = "users"
-    profiles_dir = "profiles"
+    script_dir = os.path.dirname(__file__)
+    users_dir = os.path.join(script_dir, '..', 'users') # Assuming 'users' is at the package root level
+    profiles_dir = os.path.join(script_dir, '..', 'profiles') # Assuming 'profiles' is at the package root level
    
     # profiles 디렉토리 생성
     if not os.path.exists(profiles_dir):
@@ -36,7 +39,7 @@ def migrate_old_structure():
    
     # users/ 디렉토리가 존재하면 이동
     if os.path.exists(users_dir):
-        print("🔄 기존 users/ 디렉토리를 profiles/로 통합 중...")
+        node_logger.info("🔄 기존 users/ 디렉토리를 profiles/로 통합 중...")
        
         moved_count = 0
         for filename in os.listdir(users_dir):
@@ -47,43 +50,47 @@ def migrate_old_structure():
                 # 파일이 이미 존재하지 않을 때만 이동
                 if not os.path.exists(new_path):
                     shutil.move(old_path, new_path)
-                    print(f"📁 이동: {filename}")
+                    node_logger.info(f"📁 이동: {filename}")
                     moved_count += 1
                 else:
-                    print(f"⚠️ 이미 존재함, 건너뛰기: {filename}")
+                    node_logger.warn(f"⚠️ 이미 존재함, 건너뛰기: {filename}")
        
         # 빈 users/ 디렉토리 제거
         try:
             if not os.listdir(users_dir):
                 os.rmdir(users_dir)
-                print("🗑️ 빈 users/ 디렉토리 제거")
-        except:
-            pass
+                node_logger.info("🗑️ 빈 users/ 디렉토리 제거")
+        except Exception as e:
+            node_logger.error(f"빈 users/ 디렉토리 제거 실패: {e}")
        
-        print(f"✅ 통합 완료: {moved_count}개 파일 이동")
+        node_logger.info(f"✅ 통합 완료: {moved_count}개 파일 이동")
     else:
-        print("📂 users/ 디렉토리가 없습니다. 통합 작업 건너뛰기.")
+        node_logger.info("📂 users/ 디렉토리가 없습니다. 통합 작업 건너뛰기.")
 
-class MuseumGuideSystem:
+class MuseumGuideSystem(Node):
     def __init__(self):
         """박물관 가이드 시스템 초기화"""
+        super().__init__('museum_guide_node')
+        self.get_logger().info("MuseumGuideSystem node initializing...")
         self.ui = MuseumGuideUI()
         self.user_profile = UserProfile()
         
         self.running = True
+        self.ros_launch_process = None # ROS2 Launch 프로세스 핸들
        
         # 중복 프로필 정리 (최초 1회)
-        self.user_profile.migrate_duplicate_profiles()
+        self.user_profile.migrate_duplicate_profiles(self.get_logger())
        
         # ROS2 통합 매니저 초기화 (있는 경우에만)
         if ROS2_AVAILABLE:
             try:
                 self.ros_manager = ROS2IntegrationManager()
-                print("✅ ROS2 통합 시스템 초기화 완료")
+                self.get_logger().info("ROS2 통합 시스템 초기화 완료")
             except Exception as e:
-                print(f"⚠️ ROS2 초기화 실패: {e}")
+                self.get_logger().error(f"ROS2 초기화 실패: {e}")
                 self.ros_manager = None
         else:
+            self.get_logger().warn("ROS2 환경이 아니므로 Launch 파일을 실행하지 않습니다.")
             self.ros_manager = None
        
         # JSON 파일에서 전시품 정보 로드
@@ -92,10 +99,12 @@ class MuseumGuideSystem:
         # 시스템 종료 시그널 처리
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
+        self.get_logger().info("MuseumGuideSystem node initialized.")
 
     def load_exhibitions_data(self):
         """data/exhibitions.json에서 전시품 정보 로드"""
-        data_file = "data/exhibitions.json"
+        script_dir = os.path.dirname(__file__)
+        data_file = os.path.join(script_dir, '..', 'data', "exhibitions.json")
        
         try:
             with open(data_file, 'r', encoding='utf-8') as f:
@@ -111,33 +120,78 @@ class MuseumGuideSystem:
                     "period": exhibition.get("period", ""),
                     "position": exhibition.get("position", {"x": 0, "y": 0, "theta": 0}),
                     "descriptions": exhibition.get("descriptions", {}),
-                    "keywords": exhibition.get("keywords", []),
-                    "qr_code": exhibition.get("qr_code", f"EXH{id_str.zfill(3)}")
-                }
+                    "keywords": exhibition.get("keywords", []),}
            
-            print(f"✅ {len(exhibitions)}개 전시품 정보를 JSON에서 로드했습니다.")
+            self.get_logger().info(f"{len(exhibitions)}개 전시품 정보를 JSON에서 로드했습니다.")
             return exhibitions
            
         except FileNotFoundError:
-            print(f"❌ {data_file} 파일을 찾을 수 없습니다!")
-            print(f"💡 {data_file} 파일을 생성해주세요.")
+            self.get_logger().error(f"{data_file} 파일을 찾을 수 없습니다!")
+            self.get_logger().error(f"💡 {data_file} 파일을 생성해주세요.")
             exit(1)
         except json.JSONDecodeError as e:
-            print(f"❌ JSON 파일 형식 오류: {str(e)}")
-            print(f"💡 {data_file} 파일의 JSON 형식을 확인해주세요.")
+            self.get_logger().error(f"JSON 파일 형식 오류: {str(e)}")
+            self.get_logger().error(f"💡 {data_file} 파일의 JSON 형식을 확인해주세요.")
             exit(1)
         except Exception as e:
-            print(f"❌ JSON 파일 로드 실패: {str(e)}")
+            self.get_logger().error(f"JSON 파일 로드 실패: {str(e)}")
             exit(1)
+
+    def _start_ros_launch(self):
+        """ROS2 Launch 파일을 백그라운드에서 실행"""
+        if ROS2_AVAILABLE:
+            launch_command = [
+                "ros2", "launch", "museum_introducer_pkg", "museum_guide_launch.py"
+            ]
+            try:
+                self.get_logger().info("ROS2 Launch 파일 실행 중...")
+                # preexec_fn=os.setsid를 사용하여 새로운 프로세스 그룹 생성
+                self.ros_launch_process = subprocess.Popen(
+                    launch_command,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    preexec_fn=os.setsid # 새로운 세션 리더로 만들어 프로세스 그룹 종료 가능하게 함
+                )
+                self.get_logger().info(f"ROS2 Launch 프로세스 시작 (PID: {self.ros_launch_process.pid})")
+                # 잠시 대기하여 노드들이 초기화될 시간 부여
+                time.sleep(3)
+            except Exception as e:
+                self.get_logger().error(f"ROS2 Launch 파일 실행 실패: {e}")
+                self.ros_launch_process = None
+        else:
+            self.get_logger().warn("ROS2 환경이 아니므로 Launch 파일을 실행하지 않습니다.")
+
+    def _stop_ros_launch(self):
+        """실행 중인 ROS2 Launch 프로세스를 종료"""
+        if self.ros_launch_process:
+            self.get_logger().info("ROS2 Launch 프로세스 종료 중...")
+            try:
+                # 프로세스 그룹 전체에 SIGTERM 시그널 전송
+                os.killpg(os.getpgid(self.ros_launch_process.pid), signal.SIGTERM)
+                self.ros_launch_process.wait(timeout=5) # 5초 대기
+                self.get_logger().info("ROS2 Launch 프로세스 종료 완료.")
+            except ProcessLookupError:
+                self.get_logger().warn("ROS2 Launch 프로세스가 이미 종료되었습니다.")
+            except subprocess.TimeoutExpired:
+                self.get_logger().error("ROS2 Launch 프로세스 종료 시간 초과. 강제 종료 시도...")
+                os.killpg(os.getpgid(self.ros_launch_process.pid), signal.SIGKILL)
+                self.get_logger().info("ROS2 Launch 프로세스 강제 종료 완료.")
+            except Exception as e:
+                self.get_logger().error(f"ROS2 Launch 프로세스 종료 실패: {e}")
+            finally:
+                self.ros_launch_process = None
 
     def signal_handler(self, signum, frame):
         """시스템 종료 시그널 처리"""
-        print("\n\n🛑 시스템 종료 신호를 받았습니다...")
+        self.get_logger().info("시스템 종료 신호를 받았습니다...")
         self.shutdown()
 
     def startup_sequence(self):
         """시스템 시작 시퀀스"""
         self.ui.show_startup_screen()
+       
+        # ROS2 Launch 파일 실행 (있는 경우에만)
+        self._start_ros_launch()
        
         # ROS2 스피닝 시작 (있는 경우에만)
         if self.ros_manager:
@@ -391,7 +445,7 @@ class MuseumGuideSystem:
         return recommendations[:max_exhibitions]
 
     def show_exhibition_details(self, exhibit_id):
-        """전시품 상세 설명 표시"""
+        """전시품 상세 설명 표시""" 
         exhibit = self.exhibitions[exhibit_id]
        
         # 사용자 수준에 맞는 설명
@@ -456,20 +510,20 @@ class MuseumGuideSystem:
            
             profiles = self.user_profile._get_existing_profiles()
            
-            print(f"\n📊 총 등록된 사용자: {len(profiles)}명")
+            self.get_logger().info(f"총 등록된 사용자: {len(profiles)}명")
            
             if profiles:
-                print("\n📋 등록된 사용자 목록:")
+                self.get_logger().info("등록된 사용자 목록:")
                 for i, profile_info in enumerate(profiles, 1):
                     name = profile_info.get('name', 'Unknown')
                     user_id = profile_info['user_id']
                     last_visit = profile_info.get('last_visit', '방문 기록 없음')
-                    print(f"{i:2d}. {name:15} ({user_id}) - {last_visit}")
+                    self.get_logger().info(f"{i:2d}. {name:15} ({user_id}) - {last_visit}")
            
-            print("\n1. 프로필 상세 보기")
-            print("2. 프로필 삭제")
-            print("3. 중복 프로필 정리")
-            print("0. 돌아가기")
+            self.get_logger().info("1. 프로필 상세 보기")
+            self.get_logger().info("2. 프로필 삭제")
+            self.get_logger().info("3. 중복 프로필 정리")
+            self.get_logger().info("0. 돌아가기")
            
             choice = self.ui.get_input("\n선택: ")
            
@@ -480,7 +534,7 @@ class MuseumGuideSystem:
             elif choice == "2":
                 self._delete_profile(profiles)
             elif choice == "3":
-                self.user_profile.migrate_duplicate_profiles()
+                self.user_profile.migrate_duplicate_profiles(self.get_logger())
                 self.ui.show_success("중복 프로필 정리 완료!")
                 input("계속하려면 엔터...")
             else:
@@ -492,9 +546,9 @@ class MuseumGuideSystem:
             self.ui.show_error("등록된 프로필이 없습니다.")
             return
        
-        print("\n프로필을 선택하세요:")
+        self.get_logger().info("프로필을 선택하세요:")
         for i, profile_info in enumerate(profiles, 1):
-            print(f"{i}. {profile_info['name']} ({profile_info['user_id']})")
+            self.get_logger().info(f"{i}. {profile_info['name']} ({profile_info['user_id']})")
        
         try:
             choice = int(self.ui.get_input("번호 선택: "))
@@ -519,28 +573,28 @@ class MuseumGuideSystem:
             self.ui.clear_screen()
             self.ui.display_header(f"👤 {data.get('name', 'Unknown')} 프로필 상세")
            
-            print(f"\n🆔 사용자 ID: {data.get('user_id', 'N/A')}")
-            print(f"👤 이름: {data.get('name', 'N/A')}")
-            print(f"🏷️ 닉네임: {data.get('nickname', 'N/A')}")
-            print(f"👥 연령대: {data.get('age_group', 'N/A')}")
-            print(f"🎨 관심 분야: {data.get('interest_field', 'N/A')}")
-            print(f"📚 지식 수준: {data.get('knowledge_level', 'N/A')}")
-            print(f"⏰ 선호 관람시간: {data.get('available_time', 'N/A')}분")
+            self.get_logger().info(f"🆔 사용자 ID: {data.get('user_id', 'N/A')}")
+            self.get_logger().info(f"👤 이름: {data.get('name', 'N/A')}")
+            self.get_logger().info(f"🏷️ 닉네임: {data.get('nickname', 'N/A')}")
+            self.get_logger().info(f"👥 연령대: {data.get('age_group', 'N/A')}")
+            self.get_logger().info(f"🎨 관심 분야: {data.get('interest_field', 'N/A')}")
+            self.get_logger().info(f"📚 지식 수준: {data.get('knowledge_level', 'N/A')}")
+            self.get_logger().info(f"⏰ 선호 관람시간: {data.get('available_time', 'N/A')}분")
            
             visited = data.get('visited_exhibitions', [])
-            print(f"🎭 관람한 전시품: {len(visited)}개")
+            self.get_logger().info(f"🎭 관람한 전시품: {len(visited)}개")
             if visited:
-                print(f"   → {', '.join(map(str, visited))}")
+                self.get_logger().info(f"   → {', '.join(map(str, visited))}")
            
-            print(f"\n📅 프로필 생성: {data.get('profile_created', 'N/A')}")
-            print(f"🕐 마지막 방문: {data.get('last_visit', 'N/A')}")
+            self.get_logger().info(f"\n📅 프로필 생성: {data.get('profile_created', 'N/A')}")
+            self.get_logger().info(f"🕐 마지막 방문: {data.get('last_visit', 'N/A')}")
            
             # 환경설정
             prefs = data.get('preferences', {})
-            print(f"\n⚙️ 환경설정:")
-            print(f"   언어: {prefs.get('language', 'N/A')}")
-            print(f"   음성 안내: {prefs.get('voice_guide', 'N/A')}")
-            print(f"   이동 속도: {prefs.get('walking_speed', 'N/A')}")
+            self.get_logger().info(f"\n⚙️ 환경설정:")
+            self.get_logger().info(f"   언어: {prefs.get('language', 'N/A')}")
+            self.get_logger().info(f"   음성 안내: {prefs.get('voice_guide', 'N/A')}")
+            self.get_logger().info(f"   이동 속도: {prefs.get('walking_speed', 'N/A')}")
            
             input("\n계속하려면 엔터를 눌러주세요...")
            
@@ -550,12 +604,12 @@ class MuseumGuideSystem:
     def _delete_profile(self, profiles):
         """프로필 삭제"""
         if not profiles:
-            self.ui.show_error("삭제할 프로필이 없습니다.")
+            self.ui.show_error("등록된 프로필이 없습니다.")
             return
        
-        print("\n삭제할 프로필을 선택하세요:")
+        self.get_logger().info("삭제할 프로필을 선택하세요:")
         for i, profile_info in enumerate(profiles, 1):
-            print(f"{i}. {profile_info['name']} ({profile_info['user_id']})")
+            self.get_logger().info(f"{i}. {profile_info['name']} ({profile_info['user_id']})")
        
         try:
             choice = int(self.ui.get_input("번호 선택: "))
@@ -584,48 +638,48 @@ class MuseumGuideSystem:
     def complete_tour(self):
         """관람 완료 처리"""
         try:
-            print("\n🏁 === 관람 완료 처리 시작 ===")
+            self.get_logger().info("🏁 === 관람 완료 처리 시작 ===")
            
             # end_time 설정 (generate_tour_report에서도 설정하지만 미리 설정)
             if not self.user_profile.end_time:
                 self.user_profile.end_time = datetime.now()
            
             # 관람 통계 생성
-            print("📊 관람 통계 생성 중...")
+            self.get_logger().info("📊 관람 통계 생성 중...")
             tour_stats = self.user_profile.generate_tour_report()
-            print(f"✅ 관람 통계 생성 완료 - 방문 전시품: {len(tour_stats['visited'])}개")
+            self.get_logger().info(f"✅ 관람 통계 생성 완료 - 방문 전시품: {len(tour_stats['visited'])}개")
            
             # 최종 리포트 표시
-            print("📋 최종 리포트 표시 중...")
+            self.get_logger().info("📋 최종 리포트 표시 중...")
             self.ui.show_tour_report(tour_stats, self.exhibitions)
            
             # 사용자 데이터 저장
-            print("\n💾 === 사용자 프로필 저장 시작 ===")
+            self.get_logger().info("💾 === 사용자 프로필 저장 시작 ===")
             save_result = self.user_profile.save_profile()
            
             if save_result:
-                print("✅ 프로필 저장이 성공적으로 완료되었습니다!")
+                self.get_logger().info("✅ 프로필 저장이 성공적으로 완료되었습니다!")
                 self.ui.show_success("프로필이 성공적으로 저장되었습니다!")
             else:
-                print("❌ 프로필 저장에 실패했습니다.")
+                self.get_logger().error("❌ 프로필 저장에 실패했습니다.")
                 self.ui.show_error("프로필 저장에 실패했습니다. 관리자에게 문의하세요.")
                
         except Exception as e:
-            print(f"❌ 관람 완료 처리 중 오류: {str(e)}")
-            print(f"🔍 오류 상세: {type(e).__name__}")
+            self.get_logger().error(f"❌ 관람 완료 처리 중 오류: {str(e)}")
+            self.get_logger().error(f"🔍 오류 상세: {type(e).__name__}")
            
             # 그래도 프로필 저장은 시도
-            print("🔄 오류에도 불구하고 프로필 저장을 시도합니다...")
+            self.get_logger().warn("🔄 오류에도 불구하고 프로필 저장을 시도합니다...")
             try:
                 # 강제로 user_id 생성 (혹시 없을 경우)
                 if not self.user_profile.user_id:
                     self.user_profile.user_id = f"emergency_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-                    print(f"🆘 긴급 user_id 생성: {self.user_profile.user_id}")
+                    self.get_logger().info(f"🆘 긴급 user_id 생성: {self.user_profile.user_id}")
                
                 self.user_profile.save_profile()
-                print("✅ 긴급 프로필 저장 성공!")
+                self.get_logger().info("✅ 긴급 프로필 저장 성공!")
             except Exception as save_error:
-                print(f"❌ 긴급 프로필 저장도 실패: {str(save_error)}")
+                self.get_logger().error(f"❌ 긴급 프로필 저장도 실패: {str(save_error)}")
                 # 최후의 수단: 현재 디렉토리에 간단한 백업 파일 생성
                 try:
                     backup_data = {
@@ -635,14 +689,14 @@ class MuseumGuideSystem:
                     }
                     with open(f"backup_profile_{datetime.now().strftime('%H%M%S')}.json", 'w') as f:
                         json.dump(backup_data, f, ensure_ascii=False, indent=2)
-                    print("📋 최소한의 백업 파일을 생성했습니다.")
+                    self.get_logger().info("📋 최소한의 백업 파일을 생성했습니다.")
                 except:
-                    print("💥 모든 저장 시도가 실패했습니다.")
+                    self.get_logger().error("💥 모든 저장 시도가 실패했습니다.")
        
-        print("🏁 === 관람 완료 처리 종료 ===\n")
+        self.get_logger().info("🏁 === 관람 완료 처리 종료 ===")
 
     def shutdown(self):
-        """시스템 종료"""
+        """시스템 종료""" 
         self.running = False
         self.ui.show_shutdown_screen()
        
@@ -650,28 +704,32 @@ class MuseumGuideSystem:
         if self.ros_manager:
             self.ros_manager.stop_ros()
        
-        
+        # ROS2 Launch 프로세스 종료 (있는 경우)
+        self._stop_ros_launch()
        
-        print("박물관 가이드 시스템이 종료되었습니다.")
+        self.get_logger().info("박물관 가이드 시스템이 종료되었습니다.")
 
 
-def main():
+def main(args=None):
     """메인 함수 - 자동 마이그레이션 추가"""
-    print("🏛️ 박물관 스마트 전시 가이드 로봇 시스템")
-    print("=" * 50)
-   
     try:
-        # 기존 구조 마이그레이션 (최초 1회)
-        migrate_old_structure()
+        rclpy.init(args=args)
+        node = MuseumGuideSystem()
+        node.get_logger().info("🏛️ 박물관 스마트 전시 가이드 로봇 시스템")
+        node.get_logger().info("=" * 50)
+        migrate_old_structure(node.get_logger())
+        node.get_logger().info("Starting main loop...")
+        node.main_loop()
        
-        # 시스템 인스턴스 생성 및 실행
-        guide_system = MuseumGuideSystem()
-        guide_system.main_loop()
-       
+    except KeyboardInterrupt:
+        node.get_logger().info("KeyboardInterrupt received. Shutting down.")
     except Exception as e:
-        print(f"\n❌ 치명적 오류 발생: {str(e)}")
-        print("시스템을 종료합니다.")
+        node.get_logger().error(f"치명적 오류 발생: {str(e)}")
+        node.get_logger().error("시스템을 종료합니다.")
         sys.exit(1)
+    finally:
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == "__main__":

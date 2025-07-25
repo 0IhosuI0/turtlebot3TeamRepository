@@ -1,0 +1,12 @@
+[0.278s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ghtn10000/turtlebot3TeamRepository/install/museum_introducer_pkg' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.278s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ghtn10000/turtlebot3TeamRepository/install/museum_guide_pkg' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.278s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ghtn10000/turtlebot3TeamRepository/install/museum_robot_msgs' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.279s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/ghtn10000/turtlebot3TeamRepository/install/museum_robot_msgs' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+Starting >>> museum_robot_msgs
+Finished <<< museum_robot_msgs [4.48s]
+Starting >>> museum_guide_pkg
+Starting >>> museum_introducer_pkg
+Finished <<< museum_guide_pkg [1.31s]
+Finished <<< museum_introducer_pkg [1.33s]
+
+Summary: 3 packages finished [6.06s]
