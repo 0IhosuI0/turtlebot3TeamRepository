@@ -17,6 +17,9 @@ import shutil
 from datetime import datetime
 import subprocess
 
+import ament_index_python
+from ament_index_python.packages import get_package_share_directory
+
 # ROS2 통합은 선택적으로 import
 try:
     import rclpy
@@ -84,7 +87,7 @@ class MuseumGuideSystem(Node):
         # ROS2 통합 매니저 초기화 (있는 경우에만)
         if ROS2_AVAILABLE:
             try:
-                self.ros_manager = ROS2IntegrationManager()
+                self.ros_manager = ROS2IntegrationManager(self.get_logger())
                 self.get_logger().info("ROS2 통합 시스템 초기화 완료")
             except Exception as e:
                 self.get_logger().error(f"ROS2 초기화 실패: {e}")
@@ -103,8 +106,8 @@ class MuseumGuideSystem(Node):
 
     def load_exhibitions_data(self):
         """data/exhibitions.json에서 전시품 정보 로드"""
-        script_dir = os.path.dirname(__file__)
-        data_file = os.path.join(script_dir, '..', 'data', "exhibitions.json")
+        package_share_directory = get_package_share_directory('museum_guide_pkg')
+        data_file = os.path.join(package_share_directory, 'data', "exhibitions.json")
        
         try:
             with open(data_file, 'r', encoding='utf-8') as f:

@@ -1,0 +1,448 @@
+[INFO] [launch]: All log files can be found below /home/ghtn10000/.ros/log/2025-07-25-13-25-00-487344-ROSLinux-40762
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [museum_guide_node-1]: process started with pid [40763]
+[INFO] [qr_code_follower-2]: process started with pid [40765]
+[INFO] [recommand_path_drive-3]: process started with pid [40767]
+[museum_guide_node-1] [0m[museum_guide_node] [INFO] [1753417501.058331335]: MuseumGuideSystem node initializing...[0m
+[museum_guide_node-1] [0m[museum_guide_node] [INFO] [1753417501.060632190]: 🔄 중복 프로필 정리 시작...[0m
+[museum_guide_node-1] [0m[museum_guide_node] [INFO] [1753417501.060920823]: ✅ 중복 프로필 정리 완료[0m
+[museum_guide_node-1] [33m[rcl.logging_rosout] [WARN] [1753417501.061041108]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.[0m
+[museum_guide_node-1] [0m[museum_guide_node] [INFO] [1753417501.062997081]: MuseumROS2Bridge node initializing...[0m
+[museum_guide_node-1] [0m[museum_guide_node] [INFO] [1753417501.067815802]: ROS2 브리지 노드 초기화 완료[0m
+[museum_guide_node-1] [0m[museum_guide_node] [INFO] [1753417501.068062982]: ROS2 브리지 초기화 성공[0m
+[museum_guide_node-1] [0m[museum_guide_node] [INFO] [1753417501.068288507]: ROS2 통합 시스템 초기화 완료[0m
+[museum_guide_node-1] [31m[museum_guide_node] [ERROR] [1753417501.068539127]: /home/ghtn10000/turtlebot3TeamRepository/build/museum_guide_pkg/museum_guide_pkg/../../../share/museum_guide_pkg/data/exhibitions.json 파일을 찾을 수 없습니다![0m
+[museum_guide_node-1] [31m[museum_guide_node] [ERROR] [1753417501.068764198]: 💡 /home/ghtn10000/turtlebot3TeamRepository/build/museum_guide_pkg/museum_guide_pkg/../../../share/museum_guide_pkg/data/exhibitions.json 파일을 생성해주세요.[0m
+[ERROR] [museum_guide_node-1]: process has died [pid 40763, exit code 1, cmd '/home/ghtn10000/turtlebot3TeamRepository/install/museum_guide_pkg/lib/museum_guide_pkg/museum_guide_node --ros-args -r __node:=museum_guide_node'].
+[museum_guide_node-1] [H[2J[3J
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.128760119]: QRCodeFollower node initializing...[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.135247972]: Action server created.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.206228442]: YOLO model loaded.[0m
+[qr_code_follower-2] Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.288942154]: QRCodeFollower node initialized.[0m
+[qr_code_follower-2] [33m[qr_code_follower_node] [WARN] [1753417502.289758348]: New publisher discovered on topic '/scan', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.290238369]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.290473639]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.307531099]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.307813600]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.364017296]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.364282405]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.399572070]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.399841273]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.417561429]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.417837291]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.476124302]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.476394406]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.493647356]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.493921008]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.523478827]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.523740687]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.564786377]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.565058026]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.585351563]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.585612298]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.631347046]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.631634649]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.651705955]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.651973520]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.682181775]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.682452984]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.715499618]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.715795840]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.751618713]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.751883133]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.779802900]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.780063659]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.814381925]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.814660801]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.846514060]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.846772676]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.892105023]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.892361344]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.919669680]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.919923302]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.996085356]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417502.996340314]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.092003168]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.092283046]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.115478357]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.115758840]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.152651382]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.152926227]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.179751959]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.180025329]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.217473589]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.217788163]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.249392650]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.249677634]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.283917178]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.284181421]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.309480422]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.309741958]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.349101615]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.349363656]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.379607321]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.379890041]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.415761458]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.416028922]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.455890527]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.456143911]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.485554798]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.485819182]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.513598999]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.513866268]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.548631564]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.548904294]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.592408212]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.592666193]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.643790549]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.644047042]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.663659998]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.663923471]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.682605706]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.682852138]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.711350911]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.711603961]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.748917312]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.749175757]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.783779103]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.784049130]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.819654395]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.819931653]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.867708688]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.868200845]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.881691940]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.882040503]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.912569221]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.913180783]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.956111104]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.956397152]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.985449728]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417503.985706929]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.011262340]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.011683958]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.042283532]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.042552127]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.085061437]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.085319492]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.120908957]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.121167351]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.143849708]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.144119755]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.190791390]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.191058497]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.211003205]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.211267515]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.245683109]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.245978130]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.278642955]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.278924019]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.317276250]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.317556925]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.358496068]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.358764090]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.385404304]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.385672367]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.411517334]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.411786339]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.444412127]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.444664979]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.481610819]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.481915798]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.518739146]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.519081476]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.545991659]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.546289961]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.578629537]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.578902635]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.621431324]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.621699419]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.646743413]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.646986569]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.681152778]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.681405218]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.711444825]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.711850504]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.742149628]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.742410622]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.783105694]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.783359132]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.811367170]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.811623445]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.843121557]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.843377559]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.878933718]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.879188893]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.917389426]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.917644562]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.958796790]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.959051377]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.984979977]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417504.985251088]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.014759738]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.015043332]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.040449579]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.040702830]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.074863509]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.075134256]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.115536446]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.115911490]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.141124865]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.141496796]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.174152289]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.174520123]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.210490483]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.210896360]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.250088813]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.250462015]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.284050648]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.284427308]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.320879147]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.321270589]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.350622673]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.351013433]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.387631686]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.388019692]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.412868314]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.413254850]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.457816429]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.458169990]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.477623936]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.478069316]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.510561036]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.510831153]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.545549699]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.545934592]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.575261212]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.575529539]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.624274337]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.624555778]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.640834893]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.641071059]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.677818152]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.678075353]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.707647742]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.707915142]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.742029461]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.742285475]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.791120289]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.791399171]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.819977480]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.820253686]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.861518253]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.861819154]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.953990925]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.954265694]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.981249742]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417505.981527944]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.019121920]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.019410755]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.056415734]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.056694165]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.078049165]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.078474338]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.115806319]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.116092474]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.141913872]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.142233720]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.191334106]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.191594996]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.211125756]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.211392825]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.244265859]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.244586859]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.284495766]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.284766047]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.315396774]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.315673713]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.348665550]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.348968800]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.378022737]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.378288364]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.413346822]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.413711137]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.451346453]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.451705660]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.515941928]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.516244985]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.589665819]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.589965413]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.606348946]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.606618979]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.623107432]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.623393683]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.640204008]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.640457974]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.688660713]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.688925547]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.706655593]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.706921272]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.755481269]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.755753782]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.826935758]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.827191478]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.895415828]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.895673582]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.945644173]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.945915415]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.996555905]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417506.996825273]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.022566159]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.022839612]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.079668222]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.079932400]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.093534437]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.093776685]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.125526586]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.125788684]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.174946458]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.175204757]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.215847180]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.216098826]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.242840141]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.243121395]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.266186395]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.266473919]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.284416882]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.284666728]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.321137058]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.321387489]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.333889939]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.334123790]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.360099270]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.360348372]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.377754821]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.378004996]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.389737792]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.389977436]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.405280015]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.405520101]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.425243799]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.425483438]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.445335694]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.445589603]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.479522300]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.479786081]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.490916659]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.491155073]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.520663465]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.520930388]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.550971615]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.551223304]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.580518843]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.580777417]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.624136275]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.624401345]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.641432535]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.641685806]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.718896866]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.719152881]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.735660015]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.735901058]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.753757918]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.754017636]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.777433051]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.777687479]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.813855102]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.814107314]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.856108154]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.856453636]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.913884482]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.914175002]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.954836418]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417507.955101544]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.034632224]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.034916013]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.092415226]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.092697932]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.122849066]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.123128294]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.151857624]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.152114912]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.180538858]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.180807846]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.195764645]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.196028458]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.214937679]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.215229039]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.245344862]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.245684568]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.294631652]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.294924139]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.325002910]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.325460363]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.342046657]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.342401922]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.374247868]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.374756139]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.391476895]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.391876595]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.416903971]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.417166202]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.444234076]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.444505116]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.524531218]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.524791999]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.554986576]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.555241609]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.584674095]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.584944572]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.594017590]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.594263847]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.626532071]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.626796986]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.643575565]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.643841444]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.662722566]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.662995910]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.680321485]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.680578816]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.715314842]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.715713757]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.739195999]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.739455023]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.777183079]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.777444134]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.806736668]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.807006267]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.838486269]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.838783936]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.878782686]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.879051045]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.908591906]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.908870736]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.948322912]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.948663432]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.973294799]: Image callback entered.[0m
+[qr_code_follower-2] [0m[qr_code_follower_node] [INFO] [1753417508.973573477]: Robot state is IDLE, skipping image processing. Current state: IDLE[0m
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[qr_code_follower-2] Traceback (most recent call last):
+[qr_code_follower-2]   File "/home/ghtn10000/turtlebot3TeamRepository/install/museum_introducer_pkg/lib/museum_introducer_pkg/qr_code_follower", line 33, in <module>
+[qr_code_follower-2]     sys.exit(load_entry_point('museum-introducer-pkg', 'console_scripts', 'qr_code_follower')())
+[qr_code_follower-2]   File "/home/ghtn10000/turtlebot3TeamRepository/build/museum_introducer_pkg/museum_introducer_pkg/qr_code_follower.py", line 284, in main
+[qr_code_follower-2]     rclpy.spin(node)
+[qr_code_follower-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 226, in spin
+[qr_code_follower-2]     executor.spin_once()
+[qr_code_follower-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 751, in spin_once
+[qr_code_follower-2]     self._spin_once_impl(timeout_sec)
+[qr_code_follower-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 740, in _spin_once_impl
+[qr_code_follower-2]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[qr_code_follower-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 723, in wait_for_ready_callbacks
+[qr_code_follower-2]     return next(self._cb_iter)
+[qr_code_follower-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 620, in _wait_for_ready_callbacks
+[qr_code_follower-2]     wait_set.wait(timeout_nsec)
+[qr_code_follower-2] KeyboardInterrupt
+[recommand_path_drive-3] Traceback (most recent call last):
+[recommand_path_drive-3]   File "/home/ghtn10000/turtlebot3TeamRepository/install/museum_introducer_pkg/lib/museum_introducer_pkg/recommand_path_drive", line 33, in <module>
+[recommand_path_drive-3]     sys.exit(load_entry_point('museum-introducer-pkg', 'console_scripts', 'recommand_path_drive')())
+[recommand_path_drive-3]   File "/home/ghtn10000/turtlebot3TeamRepository/build/museum_introducer_pkg/museum_introducer_pkg/recommand_path_drive.py", line 80, in main
+[recommand_path_drive-3]     rclpy.shutdown()
+[recommand_path_drive-3]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[recommand_path_drive-3]     _shutdown(context=context)
+[recommand_path_drive-3]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[recommand_path_drive-3]     return context.shutdown()
+[recommand_path_drive-3]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[recommand_path_drive-3]     self.__context.shutdown()
+[recommand_path_drive-3] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ERROR] [recommand_path_drive-3]: process has died [pid 40767, exit code 1, cmd '/home/ghtn10000/turtlebot3TeamRepository/install/museum_introducer_pkg/lib/museum_introducer_pkg/recommand_path_drive --ros-args -r __node:=recommand_path_drive_node'].
+[ERROR] [qr_code_follower-2]: process has died [pid 40765, exit code -2, cmd '/home/ghtn10000/turtlebot3TeamRepository/install/museum_introducer_pkg/lib/museum_introducer_pkg/qr_code_follower --ros-args -r __node:=qr_code_follower_node'].

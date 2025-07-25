@@ -63,6 +63,7 @@ class QRCodeFollower(Node):
         self.last_seen_side = 'CENTER'
         self.sweep_direction = 1
         self.lost_timeout = 15.0
+        cv2.namedWindow("QR Code Follower")
         self.get_logger().info("QRCodeFollower node initialized.")
 
     def execute_callback(self, goal_handle):
@@ -111,9 +112,9 @@ class QRCodeFollower(Node):
         self.lidar_zones['left']  = min([r for r in msg.ranges[30:90] if r > 0.01] or [float('inf')])
 
     def image_callback(self, msg):
-        self.get_logger().debug("Image callback received.") # Changed to debug
+        self.get_logger().info("Image callback entered.")
         if self.robot_state == 'IDLE':
-            self.get_logger().debug("Robot state is IDLE, skipping image processing.") # Changed to debug
+            self.get_logger().info(f"Robot state is IDLE, skipping image processing. Current state: {self.robot_state}")
             return
             
         try:

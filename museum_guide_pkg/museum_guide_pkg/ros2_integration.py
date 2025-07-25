@@ -199,7 +199,8 @@ class MuseumROS2Bridge(Node):
         return self.navigation_active
 
 class ROS2IntegrationManager:
-    def __init__(self):
+    def __init__(self, logger):
+        self.logger = logger
         self.bridge = None
         self.ros_thread = None
        
@@ -207,9 +208,9 @@ class ROS2IntegrationManager:
             try:
                 # rclpy.init() # Moved to main.py
                 self.bridge = MuseumROS2Bridge()
-                self.get_logger().info("ROS2 브리지 초기화 성공")
+                self.logger.info("ROS2 브리지 초기화 성공")
             except Exception as e:
-                self.get_logger().error(f"ROS2 브리지 초기화 실패: {e}")
+                self.logger.error(f"ROS2 브리지 초기화 실패: {e}")
                 self.bridge = None
 
     def start_ros_spinning(self):
